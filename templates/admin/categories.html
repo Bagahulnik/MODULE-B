@@ -1,0 +1,30 @@
+<!-- D:\MODULE B\templates\admin\categories.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-box">
+  <h2>Категории</h2>
+  <p>Количество опубликованных объявлений по каждой категории.</p>
+</div>
+
+<div class="content-box">
+  <table>
+    <thead>
+      <tr>
+        <th>Код</th>
+        <th>Название</th>
+        <th>Опубликовано</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for cat, pub_count in cat_stats %}
+        <tr>
+          <td><code>{{ cat.id }}</code></td>
+          <td>{{ cat.name }}</td>
+          <td>{{ pub_count }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

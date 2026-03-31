@@ -1,0 +1,41 @@
+<!-- D:\MODULE B\templates/admin/home.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Главная</h2>
+<p>Привет, <strong>{{ current_user.name }}</strong>!</p>
+
+<div class="stats-grid">
+  <div class="stat-card">
+    <h3>Всего пользователей</h3>
+    <p>{{ total_users }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Все объявления</h3>
+    <p>{{ total_adverts }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Опубликовано</h3>
+    <p>{{ published_adverts }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>На модерации</h3>
+    <p>{{ moderation_adverts }}</p>
+  </div>
+  <div class="stat-card">
+    <h3>Отклонены</h3>
+    <p>{{ declined_adverts }}</p>
+  </div>
+</div>
+
+<h2>Топ 10 по просмотрам</h2>
+<ol>
+  {% for advert in top_adverts %}
+    <li>
+      <a href="{{ url_for('routes.advert_detail', advert_id=advert.id) }}">
+        {{ advert.title }} ({{ advert.views }} просмотров)
+      </a>
+    </li>
+  {% endfor %}
+</ol>
+{% endblock %}

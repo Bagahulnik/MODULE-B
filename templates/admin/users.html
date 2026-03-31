@@ -1,0 +1,43 @@
+<!-- D:\MODULE B\templates\admin\users.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-box">
+  <h2>Пользователи</h2>
+  <p>Фильтр по ID, телефону или email:</p>
+  <form method="GET" class="search-form">
+    <input type="text" name="search" value="{{ search }}" placeholder="Поиск по ID / телефону / email">
+    <button type="submit">Найти</button>
+  </form>
+</div>
+
+<div class="content-box">
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Имя</th>
+        <th>Телефон</th>
+        <th>Email</th>
+        <th>Роль</th>
+        <th>Опубликовано</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user, pub_count in user_stats %}
+        <tr>
+          <td>{{ user.id }}</td>
+          <td>{{ user.name }}</td>
+          <td>{{ user.phone }}</td>
+          <td>{{ user.email }}</td>
+          <td><strong>{{ user.role }}</strong></td>
+          <td>{{ pub_count }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% if not user_stats %}
+    <p>Пользователи не найдены.</p>
+  {% endif %}
+</div>
+{% endblock %}

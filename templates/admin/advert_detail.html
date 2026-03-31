@@ -1,0 +1,24 @@
+<!-- D:\MODULE B\templates/admin/advert_detail.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-box">
+  <div class="advert-header">
+    <h2>Объявление #{{ advert.id }} — {{ advert.title }}</h2>
+    <p><strong>Категория:</strong> {{ advert.category.name }}</p>
+  </div>
+
+  <div class="advert-meta">
+    <span><strong>Статус:</strong> {{ advert.status | title }}</span>
+    <span><strong>Цена:</strong> {{ advert.price }} ₽</span>
+    <span><strong>Просмотры:</strong> {{ advert.views }}</span>
+    <span><strong>Автор:</strong> {{ advert.user.name }} ({{ advert.user.phone }})</span>
+  </div>
+
+  <p>{{ advert.text }}</p>
+
+  <p>
+    <a href="{{ url_for('routes.adverts') }}" class="btn-back">&larr; К списку объявлений</a>
+  </p>
+</div>
+{% endblock %}

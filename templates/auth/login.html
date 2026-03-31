@@ -1,0 +1,38 @@
+<!-- D:\MODULE B\templates/auth/login.html -->
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Вход в админ‑панель</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="auth-form">
+    <h2>Вход модератора</h2>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container">
+          {% for category, msg in messages %}
+            <div class="flash flash-{{ category }}">{{ msg }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <p>
+        <label>Логин (email или телефон):</label>
+        <input type="text" name="login" required>
+      </p>
+
+      <p>
+        <label>Пароль:</label>
+        <input type="password" name="password" required>
+      </p>
+
+      <button type="submit">Войти</button>
+    </form>
+  </div>
+</body>
+</html>

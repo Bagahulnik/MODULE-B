@@ -1,0 +1,81 @@
+<!-- D:\MODULE B\templates\admin\adverts.html -->
+{% extends "base.html" %}
+
+{% block content %}
+<div class="content-box">
+  <h2>Объявления</h2>
+  <p>Фильтр по статусу, категории и тексту.</p>
+</div>
+
+<div class="content-box">
+  <form method="GET" class="filter-form">
+    <div>
+      <label>Статус:</label>
+      <select name="status">
+        <option value="">Все</option>
+        <option value="moderation" {% if status == "moderation" %}selected{% endif %}>На модерации</option>
+        <option value="published" {% if status == "published" %}selected{% endif %}>Опубликованы</option>
+        <option value="declined" {% if status == "declined" %}selected{% endif %}>Отклонены</option>
+      </select>
+    </div>
+
+    <div>
+      <label>Категория:</label>
+      <select name="category_id">
+        <option value="">Все</option>
+        {% for cat in categories %}
+          <option value="{{ cat.id }}" {% if category_id == cat.id %}selected{% endif %}>
+            {{ cat.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div>
+      <label>Текст:</label>
+      <input type="text" name="text" value="{{ text }}" placeholder="Поиск по заголовку, тексту, категории или имени автора">
+    </div>
+
+    <button type="submit">Фильтровать</button>
+  </form>
+</div>
+
+<div class="content-box">
+  {% if adverts %}
+    <table>
+      <thead>
+        <tr>
+          <th>Текст</th>
+          <th>Категория</th>
+          <th>Цена</th>
+          <th>Просмотры</th>
+          <th>Статус</th>
+          <th>Автор</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for advert in adverts %}
+          <tr>
+            <td>
+              <a href="{{ url_for('routes.advert_detail', advert_id=advert.id) }}">
+                {{ advert.title }}
+              </a>
+            </td>
+            <td>{{ advert.category.name }}</td>
+            <td>{{ advert.price }} ₽</td>
+            <td>{{ advert.views }}</td>
+            <td>
+              <span class="badge-status {{ advert.status }}">
+                {{ advert.status | title }}
+              </span>
+            </td>
+            <td>{{ advert.user.name }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Объявления не найдены.</p>
+  {% endif %}
+</div>
+{% endblock %}

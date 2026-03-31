@@ -1,0 +1,21 @@
+name,phone,email,password,role
+Ethan Brooks,+1 202 555 0143,ethan@example.com,<hash(ethan_123)>,user
+Olivia Carter,+44 7700 900321,olivia@example.com,<hash(olivia_123)>,moderator
+Mason Hill,+61 412 345 678,mason@example.com,<hash(mason_123)>,user
+Ava Thompson,+49 1512 3456789,ava@example.com,<hash(ava_123)>,moderator
+Liam Wright,+33 6 12 34 56 78,liam@example.com,<hash(liam_123)>,user
+Sophia Mitchell,+7 777 123 45 67,sophia@example.com,<hash(sophia_123)>,moderator
+Noah Adams,+34 600 700 800,noah@example.com,<hash(noah_123)>,user
+Emma Clark,+39 347 123 4567,emma@example.com,<hash(emma_123)>,moderator
+Lucas Turner,+81 90 1234 5678,lucas@example.com,<hash(lucas_123)>,user
+Isabella Green,+91 98765 43210,isabella@example.com,<hash(isabella_123)>,moderator
+Benjamin Scott,+55 21 99876 5432,benjamin@example.com,<hash(benjamin_123)>,user
+Mia Robinson,+46 70 123 4567,mia@example.com,<hash(mia_123)>,moderator
+Elijah Baker,+31 6 1234 5678,elijah@example.com,<hash(elijah_123)>,user
+Harper Lewis,+82 10 3456 7890,harper@example.com,<hash(harper_123)>,moderator
+Alexander Evans,+351 912 345 678,alexander@example.com,<hash(alexander_123)>,user
+Amelia Reed,+420 777 123 456,amelia@example.com,<hash(amelia_123)>,moderator
+James Parker,+36 30 123 4567,james@example.com,<hash(james_123)>,user
+Charlotte Foster,+1 647 555 0199,charlotte@example.com,<hash(charlotte_123)>,moderator
+Daniel Murphy,+62 812 3456 7890,daniel@example.com,<hash(daniel_123)>,user
+Grace Peterson,+48 601 234 567,grace@example.com,<hash(grace_123)>,moderator
