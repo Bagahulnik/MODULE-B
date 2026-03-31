@@ -5,20 +5,142 @@
 <div class="content-box">
   <div class="advert-header">
     <h2>Объявление #{{ advert.id }} — {{ advert.title }}</h2>
-    <p><strong>Категория:</strong> {{ advert.category.name }}</p>
+    <p>
+      <strong>Категория:</strong> {{ advert.category.name }}
+      &nbsp;&nbsp;|&nbsp;&nbsp;
+      <strong>Статус:</strong> {{ advert.status | title }}
+    </p>
   </div>
 
+  <!-- Основные данные объявления -->
   <div class="advert-meta">
-    <span><strong>Статус:</strong> {{ advert.status | title }}</span>
-    <span><strong>Цена:</strong> {{ advert.price }} ₽</span>
+    <span><strong>ID:</strong> {{ advert.id }}</span>
     <span><strong>Просмотры:</strong> {{ advert.views }}</span>
-    <span><strong>Автор:</strong> {{ advert.user.name }} ({{ advert.user.phone }})</span>
+    <span><strong>Цена:</strong> {{ advert.price }} ₽</span>
   </div>
 
   <p>{{ advert.text }}</p>
 
+  <!-- Фото (плитка) -->
+  <h3>Фото</h3>
+  <div class="photo-grid">
+    {% for photo in advert.photos %}
+      <div class="photo-item">
+        <img src="{{ url_for('static', filename='uploads/' + photo.filename) }}" alt="Фото объявления">
+      </div>
+    {% else %}
+      <p>Фото не прикреплены.</p>
+    {% endfor %}
+  </div>
+
+  <!-- Автор -->
+  <h3>Автор</h3>
+  <div class="advert-meta">
+    <span><strong>ID:</strong> {{ advert.user.id }}</span>
+    <span><strong>Имя:</strong> {{ advert.user.name }}</span>
+    <span><strong>Телефон:</strong> {{ advert.user.phone }}</span>
+    <span><strong>Email:</strong> {{ advert.user.email }}</span>
+  </div>
+
+  <!-- Смена статуса -->
+  <h3>Изменить статус</h3>
+  <form method="POST" action="{{ url_for('routes.advert_status', advert_id=advert.id) }}">
+    <label>Статус:</label>
+    <select name="status" required>
+      {% if advert.status == 'moderation' %}
+        <option value="moderation" {{ 'selected' if advert.status == 'moderation' }}>На модерации</option>
+        <option value="published">Опубликовать</option>
+        <option value="declined">Отклонить</option>
+      {% elif advert.status == 'published' %}
+        <option value="published" {{ 'selected' if advert.status == 'published' }}>Опубликовано</option>
+        <option value="declined">Отклонить</option>
+      {% else %}
+        <option value="declined" {{ 'selected' if advert.status == 'declined' }}>Отклонено</option>
+      {% endif %}
+    </select>
+    <button type="submit">Обновить статус</button>
+  </form>
+
+  <!-- Платные услуги -->
+  <h3>Платные услуги</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Услуга</th>
+        <th>Дата подключения</th>
+        <th>Срок действия</th>
+        <th>Активна</th>
+        <th>Действие</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for adsrv in advert.paid_services %}
+        <tr>
+          <td>{{ adsrv.service.name }}</td>
+          <td>{{ adsrv.start_date.strftime('%d.%m.%Y') }}</td>
+          <td>{{ adsrv.duration_days }} дней</td>
+          <td>
+            {% if adsrv.is_active %}
+              <span class="badge-status published">Активна</span>
+            {% elif adsrv.is_expired %}
+              <span class="badge-status declined">Истекла</span>
+            {% else %}
+              <span class="badge-status moderation">Ожидает</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if adsrv.is_active %}
+              <form method="POST" action="{{ url_for('routes.unlink_service', advert_id=advert.id, service_id=adsrv.service_id) }}" style="display: inline;">
+                <button type="submit" class="btn-danger">Отключить</button>
+              </form>
+            {% else %}
+              <form method="POST" action="{{ url_for('routes.link_service', advert_id=advert.id, service_id=adsrv.service_id) }}" style="display: inline;">
+                <button type="submit" class="btn-primary">Подключить</button>
+              </form>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="5">Платные услуги не подключены.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <!-- Список доступных сервисов -->
+  {% if available_services %}
+    <h4>Подключить новую платную услугу</h4>
+    {% for service in available_services %}
+      <form method="POST" action="{{ url_for('routes.link_service', advert_id=advert.id, service_id=service.id) }}" style="display: inline;">
+        <button type="submit" class="btn-primary">
+          {{ service.name }} ({{ service.duration_days }} дней)
+        </button>
+      </form>
+    {% endfor %}
+  {% endif %}
+
+  <!-- Назад к списку объявлений -->
   <p>
     <a href="{{ url_for('routes.adverts') }}" class="btn-back">&larr; К списку объявлений</a>
   </p>
 </div>
 {% endblock %}
+
+<!-- Стиль для плитки фото -->
+<style>
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .photo-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #dee2e6;
+  }
+</style>
